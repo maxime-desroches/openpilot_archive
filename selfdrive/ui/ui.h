@@ -53,14 +53,14 @@ typedef enum UIStatus {
 } UIStatus;
 
 enum PrimeType {
-  UNKNOWN = -2,
-  UNPAIRED = -1,
-  NONE = 0,
-  MAGENTA = 1,
-  LITE = 2,
-  BLUE = 3,
-  MAGENTA_NEW = 4,
-  PURPLE = 5,
+  PRIME_TYPE_UNKNOWN = -2,
+  PRIME_TYPE_UNPAIRED = -1,
+  PRIME_TYPE_NONE = 0,
+  PRIME_TYPE_MAGENTA = 1,
+  PRIME_TYPE_LITE = 2,
+  PRIME_TYPE_BLUE = 3,
+  PRIME_TYPE_MAGENTA_NEW = 4,
+  PRIME_TYPE_PURPLE = 5,
 };
 
 const QColor bg_colors [] = {
@@ -98,7 +98,7 @@ typedef struct UIScene {
   cereal::LongitudinalPersonality personality;
 
   float light_sensor = -1;
-  bool started, ignition, is_metric, map_on_left, longitudinal_control;
+  bool started, ignition, is_metric, longitudinal_control;
   bool world_objects_visible = false;
   uint64_t started_frame;
 } UIScene;
@@ -115,7 +115,7 @@ public:
 
   void setPrimeType(PrimeType type);
   inline PrimeType primeType() const { return prime_type; }
-  inline bool hasPrime() const { return prime_type > PrimeType::NONE; }
+  inline bool hasPrime() const { return prime_type > PrimeType::PRIME_TYPE_NONE; }
 
   int fb_w = 0, fb_h = 0;
 
@@ -140,7 +140,7 @@ private slots:
 private:
   QTimer *timer;
   bool started_prev = false;
-  PrimeType prime_type = PrimeType::UNKNOWN;
+  PrimeType prime_type = PrimeType::PRIME_TYPE_UNKNOWN;
 };
 
 UIState *uiState();
@@ -184,8 +184,7 @@ Device *device();
 void ui_update_params(UIState *s);
 int get_path_length_idx(const cereal::XYZTData::Reader &line, const float path_height);
 void update_model(UIState *s,
-                  const cereal::ModelDataV2::Reader &model,
-                  const cereal::UiPlan::Reader &plan);
+                  const cereal::ModelDataV2::Reader &model);
 void update_dmonitoring(UIState *s, const cereal::DriverStateV2::Reader &driverstate, float dm_fade_state, bool is_rhd);
 void update_leads(UIState *s, const cereal::RadarState::Reader &radar_state, const cereal::XYZTData::Reader &line);
 void update_line_data(const UIState *s, const cereal::XYZTData::Reader &line,
